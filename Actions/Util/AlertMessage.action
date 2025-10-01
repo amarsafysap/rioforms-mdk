@@ -1,0 +1,7 @@
+{
+  "_Type": "Action.Type.Message",
+  "_Name": "AlertMessage",
+  "Title": "Debug",
+  "Message": "Info",
+  "OKCaption": "OK"
+}

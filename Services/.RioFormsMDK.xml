@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="RioFormsServiceMDK" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotation Term="Core.Links">
+                <Collection>
+                    <Record>
+                        <PropertyValue Property="rel" String="author"/>
+                        <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+                    </Record>
+                </Collection>
+            </Annotation>
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Form" EntityType="RioFormsServiceMDK.Form">
+                    <NavigationPropertyBinding Path="questions" Target="Questions"/>
+                </EntitySet>
+                <EntitySet Name="Questions" EntityType="RioFormsServiceMDK.Questions">
+                    <NavigationPropertyBinding Path="typeRef" Target="QuestionTypes"/>
+                    <NavigationPropertyBinding Path="form" Target="Form"/>
+                </EntitySet>
+                <EntitySet Name="QuestionTypes" EntityType="RioFormsServiceMDK.QuestionTypes"/>
+                <EntitySet Name="FormRecord" EntityType="RioFormsServiceMDK.FormRecord">
+                    <NavigationPropertyBinding Path="form" Target="Form"/>
+                    <NavigationPropertyBinding Path="answerRecords" Target="AnswerRecord"/>
+                </EntitySet>
+                <EntitySet Name="AnswerRecord" EntityType="RioFormsServiceMDK.AnswerRecord">
+                    <NavigationPropertyBinding Path="question" Target="Questions"/>
+                    <NavigationPropertyBinding Path="formRecord" Target="FormRecord"/>
+                </EntitySet>
+            </EntityContainer>
+            <EntityType Name="Form">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="formName" Type="Edm.String" MaxLength="50"/>
+                <Property Name="formDescription" Type="Edm.String" MaxLength="200"/>
+                <Property Name="active" Type="Edm.Boolean"/>
+                <NavigationProperty Name="questions" Type="Collection(RioFormsServiceMDK.Questions)" Partner="form">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="Questions">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="question" Type="Edm.String" MaxLength="200"/>
+                <Property Name="type_code" Type="Edm.Int32"/>
+                <NavigationProperty Name="typeRef" Type="RioFormsServiceMDK.QuestionTypes">
+                    <ReferentialConstraint Property="type_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <NavigationProperty Name="form" Type="RioFormsServiceMDK.Form" Partner="questions">
+                    <ReferentialConstraint Property="form_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="form_ID" Type="Edm.Guid"/>
+            </EntityType>
+            <EntityType Name="QuestionTypes">
+                <Key>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="code" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="40"/>
+            </EntityType>
+            <EntityType Name="FormRecord">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="firstName" Type="Edm.String" MaxLength="100"/>
+                <Property Name="lastName" Type="Edm.String" MaxLength="100"/>
+                <NavigationProperty Name="form" Type="RioFormsServiceMDK.Form">
+                    <ReferentialConstraint Property="form_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="form_ID" Type="Edm.Guid"/>
+                <NavigationProperty Name="answerRecords" Type="Collection(RioFormsServiceMDK.AnswerRecord)" Partner="formRecord">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="AnswerRecord">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <NavigationProperty Name="question" Type="RioFormsServiceMDK.Questions">
+                    <ReferentialConstraint Property="question_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="question_ID" Type="Edm.Guid"/>
+                <Property Name="textAnswer" Type="Edm.String" MaxLength="100"/>
+                <Property Name="boolAnswer" Type="Edm.Boolean"/>
+                <NavigationProperty Name="formRecord" Type="RioFormsServiceMDK.FormRecord" Partner="answerRecords">
+                    <ReferentialConstraint Property="formRecord_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="formRecord_ID" Type="Edm.Guid"/>
+            </EntityType>
+            <Annotations Target="RioFormsServiceMDK.Form/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="RioFormsServiceMDK.Questions/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="RioFormsServiceMDK.FormRecord/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="Created On"/>
+            </Annotations>
+            <Annotations Target="RioFormsServiceMDK.FormRecord/createdBy">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Core.Description" String="User's unique ID"/>
+                <Annotation Term="Common.Label" String="Created By"/>
+            </Annotations>
+            <Annotations Target="RioFormsServiceMDK.FormRecord/modifiedAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="Changed On"/>
+            </Annotations>
+            <Annotations Target="RioFormsServiceMDK.FormRecord/modifiedBy">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Core.Description" String="User's unique ID"/>
+                <Annotation Term="Common.Label" String="Changed By"/>
+            </Annotations>
+            <Annotations Target="RioFormsServiceMDK.FormRecord/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="RioFormsServiceMDK.AnswerRecord/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

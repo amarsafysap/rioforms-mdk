@@ -1,0 +1,31 @@
+{
+    "Service": "/RioMDKPOC/Services/RioFormsMDK.service",
+    "DefiningRequests": [{
+            "Name": "AnswerRecord",
+            "Query": "AnswerRecord"
+        },
+        {
+            "Name": "Form",
+            "Query": "Form"
+        },
+        {
+            "Name": "FormRecord",
+            "Query": "FormRecord"
+        },
+        {
+            "Name": "Questions",
+            "Query": "Questions"
+        },
+        {
+            "Name": "QuestionTypes",
+            "Query": "QuestionTypes"
+        }
+    ],
+    "_Type": "Action.Type.ODataService.Initialize",
+    "ShowActivityIndicator": true,
+    "ActivityIndicatorText": "Downloading...",
+    "ActionResult": {
+        "_Name": "init"
+    },
+    "OnFailure": "/RioMDKPOC/Actions/RioFormsMDK/Service/InitializeOfflineFailureMessage.action"
+}

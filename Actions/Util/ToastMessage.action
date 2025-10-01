@@ -1,0 +1,5 @@
+{
+  "_Type": "Action.Type.ToastMessage",
+  "_Name": "ToastMessage",
+  "Message": "OK"
+}

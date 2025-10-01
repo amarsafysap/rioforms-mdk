@@ -1,0 +1,10 @@
+{
+    "_Type": "Action.Type.OfflineOData.Close",
+    "Service": "/RioMDKPOC/Services/RioFormsMDK.service",
+    "Force": true,
+    "ActionResult": {
+        "_Name": "close"
+    },
+    "OnSuccess": "/RioMDKPOC/Actions/RioFormsMDK/Service/CloseOfflineSuccessMessage.action",
+    "OnFailure": "/RioMDKPOC/Actions/RioFormsMDK/Service/CloseOfflineFailureMessage.action"
+}

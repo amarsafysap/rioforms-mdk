@@ -1,0 +1,75 @@
+{
+  "_Type": "Page",
+  "_Name": "FormDetail",
+  "OnLoaded": "/RioMDKPOC/Rules/OnFormDetailLoaded.js",
+  "Controls": [
+    {
+      "_Type": "Control.Type.SectionedTable",
+      "_Name": "SectionedTable0",
+      "Sections": [
+        {
+          "_Type": "Section.Type.FormCell",
+          "_Name": "RespondentInfo",
+          "Header": { "Caption": "Respondent" },
+          "Controls": [
+            {
+              "_Type": "Control.Type.FormCell.SimpleProperty",
+              "_Name": "FirstNameInput",
+              "Caption": "First name",
+              "IsEditable": true,
+              "Value": ""
+            },
+            {
+              "_Type": "Control.Type.FormCell.SimpleProperty",
+              "_Name": "LastNameInput",
+              "Caption": "Last name",
+              "IsEditable": true,
+              "Value": ""
+            }
+          ]
+        },
+        {
+          "_Type": "Section.Type.KeyValue",
+          "_Name": "FormHeader",
+          "Header": { "Caption": "Form" },
+          "Target": {
+            "Service": "/RioMDKPOC/Services/RioFormsMDK.service",
+            "EntitySet": "Form",
+            "ReadLink": "Form({{#Property:ID}})"
+          },
+          "KeyAndValues": [
+            { "KeyName": "Name", "Value": "{formName}" },
+            { "KeyName": "Description", "Value": "{formDescription}" },
+            { "KeyName": "Active", "Value": "{active}" }
+          ]
+        }
+      ],
+      "Target": {
+        "Service": "/RioMDKPOC/Services/RioFormsMDK.service",
+        "EntitySet": "Questions",
+        "QueryOptions": "$filter=form_ID eq guid'{{#Property:ID}}' and (type_code eq 1 or type_code eq 2)&$orderby=type_code,ID"
+      },
+      "Section": "/RioMDKPOC/Fragments/QuestionSection.fragment"
+    }
+  ],
+  "ActionBar": {
+    "_Type": "Control.Type.ActionBar",
+    "_Name": "ActionBar_FormDetail",
+    "Items": [
+      {
+        "_Type": "Control.Type.ActionBarItem",
+        "_Name": "SubmitAnswersItem",
+        "Text": "Submit",
+        "Position": "Right",
+        "OnPress": "/RioMDKPOC/Rules/Submit_EntryPoint.js"
+      },
+      {
+        "_Type": "Control.Type.ActionBarItem",
+        "_Name": "SyncBtn",
+        "Text": "Sync",
+        "Position": "Left",
+        "OnPress": "/RioMDKPOC/Rules/Sync_UploadThenDownload.js"
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+{
+	"DestinationName": "RioFormsMDK",
+	"OfflineEnabled": true,
+	"_Type": "Service.OData",
+	"_Name": "RioFormsMDK.service",
+	"SourceType": "Mobile"
+}

@@ -1,0 +1,27 @@
+{
+  "AppTheme/BackgroundColor": "#FFFFFF",
+  "AppTheme/TextColor": "#1A1A1A",
+
+  "ActionBar/BackgroundColor": "#E10600",
+  "ActionBar/TitleColor": "#FFFFFF",
+  "ActionBar/IconColor": "#FFFFFF",
+
+  "Button/BackgroundColor": "#E10600",
+  "Button/TextColor": "#FFFFFF",
+  "Button/CornerRadius": 10,
+
+  "FormCell/LabelTextColor": "#1A1A1A",
+  "FormCell/ValueTextColor": "#1A1A1A",
+  "FormCell/TintColor": "#E10600",
+  "FormCell/SeparatorColor": "#F0F0F0",
+
+  "Switch/OnTintColor": "#E10600",
+  "Switch/ThumbTintColor": "#FFFFFF",
+
+  "ListView/SeparatorColor": "#EFEFEF",
+  "ObjectCell/TitleTextColor": "#1A1A1A",
+  "ObjectCell/StatusTextColor": "#E10600",
+
+  "Search/BarTintColor": "#FFFFFF",
+  "Search/TintColor": "#E10600"
+}

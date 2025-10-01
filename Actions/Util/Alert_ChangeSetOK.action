@@ -1,0 +1,7 @@
+{
+  "_Type": "Action.Type.Message",
+  "_Name": "Alert_ChangeSetOK",
+  "Title": "Submit",
+  "Message": "ChangeSet queued OK (offline).",
+  "OKCaption": "OK"
+}

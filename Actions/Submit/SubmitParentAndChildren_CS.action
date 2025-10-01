@@ -1,0 +1,10 @@
+{
+  "_Type": "Action.Type.ODataService.ChangeSet",
+  "_Name": "SubmitParentAndChildren_CS",
+  "Target": { "Service": "/RioMDKPOC/Services/RioFormsMDK.service" },
+  "Actions": [
+    "/RioMDKPOC/Actions/OData/CreateFormRecord_Minimal.action",
+    "/RioMDKPOC/Rules/BuildChildren_InCS.js"
+  ],
+  "OnSuccess": "/RioMDKPOC/Actions/Submit/AutoSync_AfterCS.action"
+}

@@ -1,0 +1,10 @@
+{
+	"_Type": "Action.Type.ODataService.Initialize",
+	"ActionResult": {
+		"_Name": "initWeb"
+	},
+	"Service": "/RioMDKPOC/Services/RioFormsMDK.service",
+	"Target": {
+		"Service": "/RioMDKPOC/Services/RioFormsMDK.service"
+	}
+}

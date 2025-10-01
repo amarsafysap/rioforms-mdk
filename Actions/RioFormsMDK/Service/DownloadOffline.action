@@ -1,0 +1,30 @@
+{
+    "Service": "/RioMDKPOC/Services/RioFormsMDK.service",
+    "DefiningRequests": [{
+            "Name": "AnswerRecord",
+            "Query": "AnswerRecord"
+        },
+        {
+            "Name": "Form",
+            "Query": "Form"
+        },
+        {
+            "Name": "FormRecord",
+            "Query": "FormRecord"
+        },
+        {
+            "Name": "Questions",
+            "Query": "Questions"
+        },
+        {
+            "Name": "QuestionTypes",
+            "Query": "QuestionTypes"
+        }
+    ],
+    "_Type": "Action.Type.OfflineOData.Download",
+    "ActionResult": {
+        "_Name": "sync"
+    },
+    "OnFailure": "/RioMDKPOC/Actions/RioFormsMDK/Service/SyncFailureMessage.action",
+    "OnSuccess": "/RioMDKPOC/Rules/RioFormsMDK/ErrorArchive_CheckForSyncError.js"
+}

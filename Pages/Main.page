@@ -1,0 +1,144 @@
+{
+	"Controls": [
+		{
+			"FilterFeedbackBar": {
+				"ShowAllFilters": false,
+				"_Type": "Control.Type.FilterFeedbackBar"
+			},
+			"_Type": "Control.Type.SectionedTable",
+			"_Name": "SectionedTable_Main",
+			"Sections": [
+				{
+					"Controls": [
+						{
+							"Value": "Checking…",
+							"_Type": "Control.Type.FormCell.SimpleProperty",
+							"_Name": "NetStatus",
+							"RequiredIndicator": false,
+							"IsVisible": "$(PLT,true,true,false)",
+							"Separator": true,
+							"Caption": "Status",
+							"Enabled": true,
+							"IsEditable": false
+						}
+					],
+					"Separators": {
+						"TopSectionSeparator": false,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
+					"Visible": true,
+					"EmptySection": {
+						"FooterVisible": false
+					},
+					"_Type": "Section.Type.FormCell",
+					"_Name": "StatusSection"
+				},
+				{
+					"Controls": [
+						{
+							"Value": "/RioMDKPOC/Rules/User/GetFirstName.js",
+							"_Type": "Control.Type.FormCell.SimpleProperty",
+							"_Name": "FirstNameInput",
+							"RequiredIndicator": false,
+							"IsVisible": true,
+							"Separator": true,
+							"Caption": "First name",
+							"OnValueChange": "/RioMDKPOC/Rules/User/SaveFirstName.js",
+							"Enabled": true,
+							"IsEditable": true
+						},
+						{
+							"Value": "/RioMDKPOC/Rules/User/GetLastName.js",
+							"_Type": "Control.Type.FormCell.SimpleProperty",
+							"_Name": "LastNameInput",
+							"RequiredIndicator": false,
+							"IsVisible": true,
+							"Separator": true,
+							"Caption": "Last name",
+							"OnValueChange": "/RioMDKPOC/Rules/User/SaveLastName.js",
+							"Enabled": true,
+							"IsEditable": true
+						}
+					],
+					"Separators": {
+						"TopSectionSeparator": false,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
+					"Header": {
+						"_Type": "SectionCommon.Type.Header",
+						"_Name": "SectionCommonTypeHeader1",
+						"AccessoryType": "None",
+						"UseTopPadding": true,
+						"Caption": "Your details"
+					},
+					"Visible": true,
+					"EmptySection": {
+						"FooterVisible": false
+					},
+					"_Type": "Section.Type.FormCell",
+					"_Name": "UserInfoSection"
+				},
+				{
+					"_Type": "Section.Type.ContactCell",
+					"Target": {
+						"Service": "/RioMDKPOC/Services/RioFormsMDK.service",
+						"EntitySet": "Form",
+						"QueryOptions": "$filter=active eq true&$orderby=formName"
+					},
+					"_Name": "FormsList",
+					"EmptySection": {
+						"FooterVisible": false
+					},
+					"ContactCell": {
+						"DetailImage": "res://contact.png",
+						"Headline": "{formName}",
+						"Subheadline": "{formDescription}",
+						"Description": "description",
+						"OnPress": "/RioMDKPOC/Actions/NavToFormDetail.action",
+						"ContextMenu": {
+							"PerformFirstActionWithFullSwipe": true
+						}
+					}
+				}
+			]
+		}
+	],
+	"_Type": "Page",
+	"_Name": "Main",
+	"OnLoaded": "/RioMDKPOC/Rules/Main/Main_OnLoaded.js",
+	"OnUnloaded": "/RioMDKPOC/Rules/Main/Main_OnUnloaded.js",
+	"OnReturning": "/RioMDKPOC/Rules/Main/Main_OnReturning.js",
+	"ActionBar": {
+		"Items": [
+			{
+				"Text": "Sync",
+				"_Type": "Control.Type.ActionBarItem",
+				"_Name": "SyncBtn",
+				"Caption": "",
+				"Position": "Right",
+				"IsIconCircular": false,
+        "Visible": "$(PLT,true,true,false)",
+				"OnPress": "/RioMDKPOC/Rules/Sync/Sync_UploadThenDownload.js"
+			},
+			{
+				"_Type": "Control.Type.ActionBarItem",
+				"_Name": "UserMenu",
+				"Caption": "User Menu",
+				"Icon": "sap-icon://customer",
+				"Position": "Right",
+				"IsIconCircular": false,
+				"Visible": true,
+				"OnPress": "/RioMDKPOC/Actions/Application/UserMenuPopover.action"
+			}
+		],
+		"_Name": "ActionBar_Main",
+		"_Type": "Control.Type.ActionBar",
+		"Caption": "Forms"
+	}
+}

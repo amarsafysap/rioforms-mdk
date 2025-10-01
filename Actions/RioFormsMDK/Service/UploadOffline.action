@@ -1,0 +1,9 @@
+{
+    "Service": "/RioMDKPOC/Services/RioFormsMDK.service",
+    "_Type": "Action.Type.OfflineOData.Upload",
+    "ActionResult": {
+        "_Name": "sync"
+    },
+    "OnSuccess": "/RioMDKPOC/Actions/RioFormsMDK/Service/DownloadStartedMessage.action",
+    "OnFailure": "/RioMDKPOC/Actions/RioFormsMDK/Service/SyncFailureMessage.action"
+}

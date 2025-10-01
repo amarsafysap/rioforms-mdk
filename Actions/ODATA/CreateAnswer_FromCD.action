@@ -1,0 +1,21 @@
+{
+  "_Type": "Action.Type.ODataService.CreateRelatedEntity",
+  "_Name": "CreateAnswer_FromCD",
+  "Target": {
+    "Service": "/RioMDKPOC/Services/RioFormsMDK.service",
+    "EntitySet": "AnswerRecord"
+  },
+  "ParentLink": {
+    "Property": "answerRecords",
+    "Target": {
+      "Service": "/RioMDKPOC/Services/RioFormsMDK.service",
+      "EntitySet": "FormRecord",
+      "ReadLink": "pending_1"
+    }
+  },
+  "Properties": {
+    "question_ID": "/RioMDKPOC/Rules/ChildProps/GetQuestionID_FromCD.js",
+    "textAnswer": "/RioMDKPOC/Rules/ChildProps/GetText_FromCD.js",
+    "boolAnswer": "/RioMDKPOC/Rules/ChildProps/GetBool_FromCD.js"
+  }
+}

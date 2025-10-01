@@ -1,0 +1,10 @@
+{
+	"Application": "/home/user/projects/RioMDKPOC/Application.app",
+	"Target": "Mobile & Cloud",
+	"OtherApps": [
+		{
+			"Application": "/home/user/projects/RioMDKPOC/Application.app",
+			"Target": "Mobile & Cloud"
+		}
+	]
+}

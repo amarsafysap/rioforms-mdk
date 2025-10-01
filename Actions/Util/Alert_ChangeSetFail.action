@@ -1,0 +1,7 @@
+{
+  "_Type": "Action.Type.Message",
+  "_Name": "Alert_ChangeSetFail",
+  "Title": "Submit",
+  "Message": "ChangeSet failed. See error archive / logs.",
+  "OKCaption": "OK"
+}

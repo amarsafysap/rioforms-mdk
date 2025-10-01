@@ -1,0 +1,7 @@
+{
+  "_Type": "Action.Type.Message",
+  "_Name": "Alert_OfflineQueued",
+  "Title": "Submit",
+  "Message": "Saved offline. Use User Menu -> Sync when online.",
+  "OKCaption": "OK"
+}

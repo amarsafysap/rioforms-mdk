@@ -1,0 +1,5 @@
+{
+  "_Type": "Action.Type.OfflineOData.Upload",
+  "_Name": "UploadOffline_Silent",
+  "Service": "/RioMDKPOC/Services/RioFormsMDK.service"
+}

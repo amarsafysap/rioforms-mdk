@@ -1,0 +1,12 @@
+{
+  "_Type": "Action.Type.OfflineOData.Download",
+  "_Name": "DownloadAfterUpload",
+  "Service": "/RioMDKPOC/Services/RioFormsMDK.service",
+  "DefiningRequests": [
+    { "Name": "Form", "Query": "Form" },
+    { "Name": "Questions", "Query": "Questions" },
+    { "Name": "QuestionTypes", "Query": "QuestionTypes" },
+    { "Name": "FormRecord", "Query": "FormRecord" },
+    { "Name": "AnswerRecord", "Query": "AnswerRecord" }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "_Type": "Action.Type.ODataService.CreateEntity",
+  "_Name": "CreateFormRecord_Minimal",
+  "Target": {
+    "Service": "/RioMDKPOC/Services/RioFormsMDK.service",
+    "EntitySet": "FormRecord"
+  },
+  "Properties": {
+    "firstName": "/RioMDKPOC/Rules/User/GetFirstName.js",
+    "lastName":  "/RioMDKPOC/Rules/User/GetLastName.js",
+    "form_ID":   "{ID}"
+  },
+  "ActionResult": { "_Name": "CreateParent" }
+}

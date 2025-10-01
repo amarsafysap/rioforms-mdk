@@ -1,0 +1,5 @@
+{
+  "_Type": "Action.Type.Navigation",
+  "_Name": "NavToFormDetail",
+  "PageToOpen": "/RioMDKPOC/Pages/FormDetail.page"
+}

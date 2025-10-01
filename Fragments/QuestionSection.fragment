@@ -1,0 +1,22 @@
+{
+  "_Type": "Section.Type.FormCell",
+  "_Name": "QuestionSectionTemplate",
+  "Header": { "Caption": "{question}" },
+  "Controls": [
+    {
+      "_Type": "Control.Type.FormCell.SimpleProperty",
+      "_Name": "Q_Text",
+      "Caption": "Answer",
+      "IsEditable": true,
+      "Value": "",
+      "IsVisible": "/RioMDKPOC/Rules/Vis/IsText.js"
+    },
+    {
+      "_Type": "Control.Type.FormCell.Switch",
+      "_Name": "Q_Bool",
+      "Caption": "Yes / No",
+      "Value": false,
+      "IsVisible": "/RioMDKPOC/Rules/Vis/IsBool.js"
+    }
+  ]
+}

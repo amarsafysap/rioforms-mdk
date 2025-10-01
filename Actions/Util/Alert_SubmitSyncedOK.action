@@ -1,0 +1,7 @@
+{
+  "_Type": "Action.Type.Message",
+  "_Name": "Alert_SubmitSyncedOK",
+  "Title": "Submit",
+  "Message": "Submitted and synced to server.",
+  "OKCaption": "OK"
+}

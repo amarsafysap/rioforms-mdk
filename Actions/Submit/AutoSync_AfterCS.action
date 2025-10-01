@@ -1,0 +1,6 @@
+{
+  "_Type": "Action.Type.OfflineOData.Upload",
+  "_Name": "AutoSync_AfterCS",
+  "Service": "/RioMDKPOC/Services/RioFormsMDK.service",
+  "OnSuccess": "/RioMDKPOC/Actions/RioFormsMDK/Service/DownloadAfterUpload.action"
+}
