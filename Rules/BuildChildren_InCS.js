@@ -16,7 +16,7 @@ export default function BuildChildren_InCS(clientAPI) {
 
     for (let i = 0; i < arr.length; i++) {
       cd.childIndex = i;
-      await clientAPI.executeAction("/RioMDKPOC/Actions/OData/CreateAnswer_FromCD.action");
+      await clientAPI.executeAction("/RioMDKPOC/Actions/ODATA/CreateAnswer_FromCD.action");
     }
 
     await toast(`Queued ${arr.length} child record(s).`);

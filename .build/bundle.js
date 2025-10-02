@@ -1,10 +1,10 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@nativescript/core/connectivity"), require("@nativescript/core/application-settings"));
+		module.exports = factory(require("@nativescript/core/connectivity"), (function webpackLoadOptionalExternalModule() { try { return require("@nativescript/core/application-settings"); } catch(e) {} }()));
 	else if(typeof define === 'function' && define.amd)
 		define(["@nativescript/core/connectivity", "@nativescript/core/application-settings"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@nativescript/core/connectivity"), require("@nativescript/core/application-settings")) : factory(root["@nativescript/core/connectivity"], root["@nativescript/core/application-settings"]);
+		var a = typeof exports === 'object' ? factory(require("@nativescript/core/connectivity"), (function webpackLoadOptionalExternalModule() { try { return require("@nativescript/core/application-settings"); } catch(e) {} }())) : factory(root["@nativescript/core/connectivity"], root["@nativescript/core/application-settings"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
 })(this, (__WEBPACK_EXTERNAL_MODULE__nativescript_core_connectivity__, __WEBPACK_EXTERNAL_MODULE__nativescript_core_application_settings__) => {
@@ -120,6 +120,7 @@ let riomdkpoc_rules_network_getonlinebadge_js = __webpack_require__(/*! ./RioMDK
 let riomdkpoc_rules_onformdetailloaded_js = __webpack_require__(/*! ./RioMDKPOC/Rules/OnFormDetailLoaded.js */ "./build.definitions/RioMDKPOC/Rules/OnFormDetailLoaded.js")
 let riomdkpoc_rules_parentprops_getfirstname_frompage_js = __webpack_require__(/*! ./RioMDKPOC/Rules/ParentProps/GetFirstName_FromPage.js */ "./build.definitions/RioMDKPOC/Rules/ParentProps/GetFirstName_FromPage.js")
 let riomdkpoc_rules_parentprops_getlastname_frompage_js = __webpack_require__(/*! ./RioMDKPOC/Rules/ParentProps/GetLastName_FromPage.js */ "./build.definitions/RioMDKPOC/Rules/ParentProps/GetLastName_FromPage.js")
+let riomdkpoc_rules_queries_questions_queryoptions_js = __webpack_require__(/*! ./RioMDKPOC/Rules/Queries/Questions_QueryOptions.js */ "./build.definitions/RioMDKPOC/Rules/Queries/Questions_QueryOptions.js")
 let riomdkpoc_rules_rioformsmdk_errorarchive_checkforsyncerror_js = __webpack_require__(/*! ./RioMDKPOC/Rules/RioFormsMDK/ErrorArchive_CheckForSyncError.js */ "./build.definitions/RioMDKPOC/Rules/RioFormsMDK/ErrorArchive_CheckForSyncError.js")
 let riomdkpoc_rules_service_initialize_js = __webpack_require__(/*! ./RioMDKPOC/Rules/Service/Initialize.js */ "./build.definitions/RioMDKPOC/Rules/Service/Initialize.js")
 let riomdkpoc_rules_submit_entrypoint_js = __webpack_require__(/*! ./RioMDKPOC/Rules/Submit_EntryPoint.js */ "./build.definitions/RioMDKPOC/Rules/Submit_EntryPoint.js")
@@ -233,6 +234,7 @@ module.exports = {
 	riomdkpoc_rules_onformdetailloaded_js : riomdkpoc_rules_onformdetailloaded_js,
 	riomdkpoc_rules_parentprops_getfirstname_frompage_js : riomdkpoc_rules_parentprops_getfirstname_frompage_js,
 	riomdkpoc_rules_parentprops_getlastname_frompage_js : riomdkpoc_rules_parentprops_getlastname_frompage_js,
+	riomdkpoc_rules_queries_questions_queryoptions_js : riomdkpoc_rules_queries_questions_queryoptions_js,
 	riomdkpoc_rules_rioformsmdk_errorarchive_checkforsyncerror_js : riomdkpoc_rules_rioformsmdk_errorarchive_checkforsyncerror_js,
 	riomdkpoc_rules_service_initialize_js : riomdkpoc_rules_service_initialize_js,
 	riomdkpoc_rules_submit_entrypoint_js : riomdkpoc_rules_submit_entrypoint_js,
@@ -540,7 +542,7 @@ function BuildChildren_InCS(clientAPI) {
     }
     for (let i = 0; i < arr.length; i++) {
       cd.childIndex = i;
-      await clientAPI.executeAction("/RioMDKPOC/Actions/OData/CreateAnswer_FromCD.action");
+      await clientAPI.executeAction("/RioMDKPOC/Actions/ODATA/CreateAnswer_FromCD.action");
     }
     await toast(`Queued ${arr.length} child record(s).`);
     return true;
@@ -1145,6 +1147,44 @@ function GetLastName_FromPage(clientAPI) {
 
 /***/ }),
 
+/***/ "./build.definitions/RioMDKPOC/Rules/Queries/Questions_QueryOptions.js":
+/*!*****************************************************************************!*\
+  !*** ./build.definitions/RioMDKPOC/Rules/Queries/Questions_QueryOptions.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Questions_QueryOptions)
+/* harmony export */ });
+function Questions_QueryOptions(clientAPI) {
+  const page = clientAPI.getPageProxy();
+
+  // Get the Form ID from page binding (fallback to client data if you prefer)
+  const formId = page && page.binding && page.binding.ID || page.getClientData && page.getClientData().FormID;
+  if (!formId) {
+    // Safe no-op filter
+    return "$filter=ID eq null";
+  }
+
+  // Detect web vs native: in MDK web, 'nativescript' is not present
+  let isWeb = false;
+  try {
+    isWeb = !clientAPI.nativescript || !clientAPI.nativescript.platformModule?.isAndroid && !clientAPI.nativescript.platformModule?.isIOS;
+  } catch (_) {
+    isWeb = true;
+  }
+
+  // Build the per-platform literal
+  const idLiteral = isWeb ? `${formId}` : `guid'${formId}'`;
+
+  // Return the full query
+  return `$filter=form_ID eq ${idLiteral} and (type_code eq 1 or type_code eq 2)&$orderby=type_code,ID`;
+}
+
+/***/ }),
+
 /***/ "./build.definitions/RioMDKPOC/Rules/RioFormsMDK/ErrorArchive_CheckForSyncError.js":
 /*!*****************************************************************************************!*\
   !*** ./build.definitions/RioMDKPOC/Rules/RioFormsMDK/ErrorArchive_CheckForSyncError.js ***!
@@ -1223,9 +1263,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ Submit_EntryPoint)
 /* harmony export */ });
-/* harmony import */ var _nativescript_core_application_settings__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @nativescript/core/application-settings */ "@nativescript/core/application-settings");
-/* harmony import */ var _nativescript_core_application_settings__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_nativescript_core_application_settings__WEBPACK_IMPORTED_MODULE_0__);
-
+// /RioMDKPOC/Rules/Submit_EntryPoint.js
 function Submit_EntryPoint(clientAPI) {
   const page = clientAPI.getPageProxy();
   const toast = Message => clientAPI.executeAction({
@@ -1234,8 +1272,35 @@ function Submit_EntryPoint(clientAPI) {
       Message
     }
   });
-  const connectivity = __webpack_require__(/*! @nativescript/core/connectivity */ "@nativescript/core/connectivity");
-  const isOnline = () => connectivity.getConnectionType() !== connectivity.connectionType.none;
+
+  // Platform check (don’t rely on top-level NS imports on web)
+  const isMobile = () => {
+    try {
+      const ns = clientAPI.nativescript;
+      return !!(ns && (ns.platformModule?.isAndroid || ns.platformModule?.isIOS));
+    } catch {
+      return false;
+    }
+  };
+
+  // Connectivity (mobile uses NS connectivity; web uses navigator.onLine)
+  let connectivity;
+  const isOnline = () => {
+    if (isMobile()) {
+      try {
+        connectivity = connectivity || __webpack_require__(/*! @nativescript/core/connectivity */ "@nativescript/core/connectivity");
+        return connectivity.getConnectionType() !== connectivity.connectionType.none;
+      } catch {
+        // If connectivity module isn’t available for any reason, assume online
+        return true;
+      }
+    }
+    try {
+      return typeof navigator !== "undefined" ? navigator.onLine !== false : true;
+    } catch {
+      return true;
+    }
+  };
   return (async () => {
     // 1) Collect answers
     const sections = page.getControl("SectionedTable0")?.getSections?.() || [];
@@ -1247,7 +1312,8 @@ function Submit_EntryPoint(clientAPI) {
       } catch {}
       const t = Number(b?.type_code);
       const qid = b?.ID;
-      if (!qid || !t || t === 3) continue;
+      if (!qid || !t || t === 3) continue; // guard / ignore non-text/boolean
+
       const item = {
         question_ID: qid
       };
@@ -1256,21 +1322,32 @@ function Submit_EntryPoint(clientAPI) {
       childPayloads.push(item);
     }
 
-    // 2) Stash children for the CS rule
+    // 2) Stash children for the ChangeSet helper
     const cd = page.getClientData();
     cd.childPayloads = childPayloads;
     cd.childIndex = -1;
 
-    // 3) Read persisted names and pass as ActionBinding to the ChangeSet
-    const firstName = (0,_nativescript_core_application_settings__WEBPACK_IMPORTED_MODULE_0__.getString)("userFirstName", "");
-    const lastName = (0,_nativescript_core_application_settings__WEBPACK_IMPORTED_MODULE_0__.getString)("userLastName", "");
+    // 3) Read persisted names (mobile via NS app-settings; web leaves blank)
+    let firstName = "";
+    let lastName = "";
+    if (isMobile()) {
+      try {
+        const appSettings = __webpack_require__(/*! @nativescript/core/application-settings */ "@nativescript/core/application-settings");
+        firstName = appSettings.getString("userFirstName", "");
+        lastName = appSettings.getString("userLastName", "");
+      } catch {
+        // ignore; leave blank if not available
+      }
+    }
+
+    // 4) Execute ChangeSet (parent + children)
     try {
       await clientAPI.executeAction({
         Name: "/RioMDKPOC/Actions/Submit/SubmitParentAndChildren_CS.action",
         ActionBinding: {
           firstName,
           lastName
-        }
+        } // (safe even if action ignores it)
       });
     } catch (e) {
       const msg = (e && e.message ? e.message : String(e)).toLowerCase();
@@ -1284,15 +1361,17 @@ function Submit_EntryPoint(clientAPI) {
       return false;
     }
 
-    // 4) Success toast + optional silent sync if online
+    // 5) Success UX (mobile still does silent upload+pull; web skips it)
     if (isOnline()) {
       await toast("Submitted");
-      clientAPI.executeAction("/RioMDKPOC/Actions/RioFormsMDK/Service/UploadOffline_Silent.action").then(() => clientAPI.executeAction("/RioMDKPOC/Actions/RioFormsMDK/Service/DownloadOffline_Silent.action")).catch(() => {});
+      if (isMobile()) {
+        clientAPI.executeAction("/RioMDKPOC/Actions/RioFormsMDK/Service/UploadOffline_Silent.action").then(() => clientAPI.executeAction("/RioMDKPOC/Actions/RioFormsMDK/Service/DownloadOffline_Silent.action")).catch(() => {});
+      }
     } else {
       await toast("Saved offline. Will sync when online.");
     }
 
-    // 5) Close page
+    // 6) Close page
     await clientAPI.executeAction("/RioMDKPOC/Actions/Navigation/ClosePage.action");
     return true;
   })();
@@ -1794,7 +1873,7 @@ module.exports = {"Controls":[{"_Type":"Control.Type.SectionedTable","_Name":"Se
   \***********************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Page","_Name":"FormDetail","OnLoaded":"/RioMDKPOC/Rules/OnFormDetailLoaded.js","Controls":[{"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"_Type":"Section.Type.FormCell","_Name":"RespondentInfo","Header":{"Caption":"Respondent"},"Controls":[{"_Type":"Control.Type.FormCell.SimpleProperty","_Name":"FirstNameInput","Caption":"First name","IsEditable":true,"Value":""},{"_Type":"Control.Type.FormCell.SimpleProperty","_Name":"LastNameInput","Caption":"Last name","IsEditable":true,"Value":""}]},{"_Type":"Section.Type.KeyValue","_Name":"FormHeader","Header":{"Caption":"Form"},"Target":{"Service":"/RioMDKPOC/Services/RioFormsMDK.service","EntitySet":"Form","ReadLink":"Form({{#Property:ID}})"},"KeyAndValues":[{"KeyName":"Name","Value":"{formName}"},{"KeyName":"Description","Value":"{formDescription}"},{"KeyName":"Active","Value":"{active}"}]}],"Target":{"Service":"/RioMDKPOC/Services/RioFormsMDK.service","EntitySet":"Questions","QueryOptions":"$filter=form_ID eq guid'{{#Property:ID}}' and (type_code eq 1 or type_code eq 2)&$orderby=type_code,ID"},"Section":{"_Type":"Section.Type.FormCell","_Name":"QuestionSectionTemplate","Header":{"Caption":"{question}"},"Controls":[{"_Type":"Control.Type.FormCell.SimpleProperty","_Name":"Q_Text","Caption":"Answer","IsEditable":true,"Value":"","IsVisible":"/RioMDKPOC/Rules/Vis/IsText.js"},{"_Type":"Control.Type.FormCell.Switch","_Name":"Q_Bool","Caption":"Yes / No","Value":false,"IsVisible":"/RioMDKPOC/Rules/Vis/IsBool.js"}]}}],"ActionBar":{"_Type":"Control.Type.ActionBar","_Name":"ActionBar_FormDetail","Items":[{"_Type":"Control.Type.ActionBarItem","_Name":"SubmitAnswersItem","Text":"Submit","Position":"Right","OnPress":"/RioMDKPOC/Rules/Submit_EntryPoint.js"},{"_Type":"Control.Type.ActionBarItem","_Name":"SyncBtn","Text":"Sync","Position":"Left","OnPress":"/RioMDKPOC/Rules/Sync_UploadThenDownload.js"}]}}
+module.exports = {"_Type":"Page","_Name":"FormDetail","OnLoaded":"/RioMDKPOC/Rules/OnFormDetailLoaded.js","Controls":[{"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"_Type":"Section.Type.FormCell","_Name":"RespondentInfo","Header":{"Caption":"Respondent"},"Controls":[{"_Type":"Control.Type.FormCell.SimpleProperty","_Name":"FirstNameInput","Caption":"First name","IsEditable":true,"Value":""},{"_Type":"Control.Type.FormCell.SimpleProperty","_Name":"LastNameInput","Caption":"Last name","IsEditable":true,"Value":""}]},{"_Type":"Section.Type.KeyValue","_Name":"FormHeader","Header":{"Caption":"Form"},"Target":{"Service":"/RioMDKPOC/Services/RioFormsMDK.service","EntitySet":"Form","ReadLink":"Form({{#Property:ID}})"},"KeyAndValues":[{"KeyName":"Name","Value":"{formName}"},{"KeyName":"Description","Value":"{formDescription}"},{"KeyName":"Active","Value":"{active}"}]}],"Target":{"Service":"/RioMDKPOC/Services/RioFormsMDK.service","EntitySet":"Questions","QueryOptions":"/RioMDKPOC/Rules/Queries/Questions_QueryOptions.js"},"Section":{"_Type":"Section.Type.FormCell","_Name":"QuestionSectionTemplate","Header":{"Caption":"{question}"},"Controls":[{"_Type":"Control.Type.FormCell.SimpleProperty","_Name":"Q_Text","Caption":"Answer","IsEditable":true,"Value":"","IsVisible":"/RioMDKPOC/Rules/Vis/IsText.js"},{"_Type":"Control.Type.FormCell.Switch","_Name":"Q_Bool","Caption":"Yes / No","Value":false,"IsVisible":"/RioMDKPOC/Rules/Vis/IsBool.js"}]}}],"ActionBar":{"_Type":"Control.Type.ActionBar","_Name":"ActionBar_FormDetail","Items":[{"_Type":"Control.Type.ActionBarItem","_Name":"SubmitAnswersItem","Text":"Submit","Position":"Right","OnPress":"/RioMDKPOC/Rules/Submit_EntryPoint.js"},{"_Type":"Control.Type.ActionBarItem","_Name":"SyncBtn","Text":"Sync","Position":"Left","OnPress":"/RioMDKPOC/Rules/Sync_UploadThenDownload.js"}]}}
 
 /***/ }),
 
@@ -1804,7 +1883,7 @@ module.exports = {"_Type":"Page","_Name":"FormDetail","OnLoaded":"/RioMDKPOC/Rul
   \*****************************************************/
 /***/ ((module) => {
 
-module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable_Main","Sections":[{"Controls":[{"Value":"Checking…","_Type":"Control.Type.FormCell.SimpleProperty","_Name":"NetStatus","RequiredIndicator":false,"IsVisible":"$(PLT,true,true,false)","Separator":true,"Caption":"Status","Enabled":true,"IsEditable":false}],"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"StatusSection"},{"Controls":[{"Value":"/RioMDKPOC/Rules/User/GetFirstName.js","_Type":"Control.Type.FormCell.SimpleProperty","_Name":"FirstNameInput","RequiredIndicator":false,"IsVisible":true,"Separator":true,"Caption":"First name","OnValueChange":"/RioMDKPOC/Rules/User/SaveFirstName.js","Enabled":true,"IsEditable":true},{"Value":"/RioMDKPOC/Rules/User/GetLastName.js","_Type":"Control.Type.FormCell.SimpleProperty","_Name":"LastNameInput","RequiredIndicator":false,"IsVisible":true,"Separator":true,"Caption":"Last name","OnValueChange":"/RioMDKPOC/Rules/User/SaveLastName.js","Enabled":true,"IsEditable":true}],"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Header":{"_Type":"SectionCommon.Type.Header","_Name":"SectionCommonTypeHeader1","AccessoryType":"None","UseTopPadding":true,"Caption":"Your details"},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"UserInfoSection"},{"_Type":"Section.Type.ContactCell","Target":{"Service":"/RioMDKPOC/Services/RioFormsMDK.service","EntitySet":"Form","QueryOptions":"$filter=active eq true&$orderby=formName"},"_Name":"FormsList","EmptySection":{"FooterVisible":false},"ContactCell":{"DetailImage":"res://contact.png","Headline":"{formName}","Subheadline":"{formDescription}","Description":"description","OnPress":"/RioMDKPOC/Actions/NavToFormDetail.action","ContextMenu":{"PerformFirstActionWithFullSwipe":true}}}]}],"_Type":"Page","_Name":"Main","OnLoaded":"/RioMDKPOC/Rules/Main/Main_OnLoaded.js","OnUnloaded":"/RioMDKPOC/Rules/Main/Main_OnUnloaded.js","OnReturning":"/RioMDKPOC/Rules/Main/Main_OnReturning.js","ActionBar":{"Items":[{"Text":"Sync","_Type":"Control.Type.ActionBarItem","_Name":"SyncBtn","Caption":"","Position":"Right","IsIconCircular":false,"Visible":"$(PLT,true,true,false)","OnPress":"/RioMDKPOC/Rules/Sync/Sync_UploadThenDownload.js"},{"_Type":"Control.Type.ActionBarItem","_Name":"UserMenu","Caption":"User Menu","Icon":"sap-icon://customer","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/RioMDKPOC/Actions/Application/UserMenuPopover.action"}],"_Name":"ActionBar_Main","_Type":"Control.Type.ActionBar","Caption":"Forms"}}
+module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable_Main","Sections":[{"Controls":[{"Value":"Checking…","_Type":"Control.Type.FormCell.SimpleProperty","_Name":"NetStatus","IsVisible":"$(PLT,true,true,false)","Separator":true,"Caption":"Status","Enabled":true,"IsEditable":false}],"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"StatusSection"},{"Controls":[{"Value":"/RioMDKPOC/Rules/User/GetFirstName.js","_Type":"Control.Type.FormCell.SimpleProperty","_Name":"FirstNameInput","IsVisible":true,"Separator":true,"Styles":{"RequiredIndicator":"false"},"Caption":"First name","OnValueChange":"/RioMDKPOC/Rules/User/SaveFirstName.js","Enabled":true,"IsEditable":true},{"Value":"/RioMDKPOC/Rules/User/GetLastName.js","_Type":"Control.Type.FormCell.SimpleProperty","_Name":"LastNameInput","IsVisible":true,"Separator":true,"Caption":"Last name","OnValueChange":"/RioMDKPOC/Rules/User/SaveLastName.js","Enabled":true,"IsEditable":true}],"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Header":{"_Type":"SectionCommon.Type.Header","_Name":"SectionCommonTypeHeader1","AccessoryType":"None","UseTopPadding":true,"Caption":"Your details"},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"UserInfoSection"},{"_Type":"Section.Type.ContactCell","Target":{"Service":"/RioMDKPOC/Services/RioFormsMDK.service","EntitySet":"Form","QueryOptions":"$filter=active eq true&$orderby=formName"},"_Name":"FormsList","EmptySection":{"FooterVisible":false},"ContactCell":{"DetailImage":"res://contact.png","Headline":"{formName}","Subheadline":"{formDescription}","Description":"description","OnPress":"/RioMDKPOC/Actions/NavToFormDetail.action","ContextMenu":{"PerformFirstActionWithFullSwipe":true}}}]}],"_Type":"Page","_Name":"Main","OnLoaded":"/RioMDKPOC/Rules/Main/Main_OnLoaded.js","OnUnloaded":"/RioMDKPOC/Rules/Main/Main_OnUnloaded.js","OnReturning":"/RioMDKPOC/Rules/Main/Main_OnReturning.js","ActionBar":{"Items":[{"Text":"Sync","_Type":"Control.Type.ActionBarItem","_Name":"SyncBtn","Caption":"","Position":"Right","IsIconCircular":false,"Visible":"$(PLT,true,true,false)","OnPress":"/RioMDKPOC/Rules/Sync_UploadThenDownload.js"},{"_Type":"Control.Type.ActionBarItem","_Name":"UserMenu","Caption":"User Menu","Icon":"sap-icon://customer","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/RioMDKPOC/Actions/Application/UserMenuPopover.action"}],"_Name":"ActionBar_Main","_Type":"Control.Type.ActionBar","Caption":"Forms"}}
 
 /***/ }),
 
@@ -2214,7 +2293,7 @@ module.exports = {"Message":"Failed to initialize application data service - {#A
   \********************************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.ODataService.Initialize","Target":{"Service":"/RioMDKPOC/Services/RioFormsMDK.service"},"ActionResult":{"_Name":"initWeb"}}
+module.exports = {"_Type":"Action.Type.ODataService.Initialize","ActionResult":{"_Name":"initWeb"},"Service":"/RioMDKPOC/Services/RioFormsMDK.service","Target":{"Service":"/RioMDKPOC/Services/RioFormsMDK.service"}}
 
 /***/ }),
 
@@ -2274,7 +2353,7 @@ module.exports = {"_Type":"Action.Type.OfflineOData.Upload","_Name":"AutoSync_Af
   \**************************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.ODataService.ChangeSet","_Name":"SubmitParentAndChildren_CS","Target":{"Service":"/RioMDKPOC/Services/RioFormsMDK.service"},"Actions":["/RioMDKPOC/Actions/OData/CreateFormRecord_Minimal.action","/RioMDKPOC/Rules/BuildChildren_InCS.js"],"OnSuccess":"/RioMDKPOC/Actions/Submit/AutoSync_AfterCS.action"}
+module.exports = {"_Type":"Action.Type.ODataService.ChangeSet","_Name":"SubmitParentAndChildren_CS","Target":{"Service":"/RioMDKPOC/Services/RioFormsMDK.service"},"Actions":["/RioMDKPOC/Actions/ODATA/CreateFormRecord_Minimal.action","/RioMDKPOC/Rules/BuildChildren_InCS.js"],"OnSuccess":"/RioMDKPOC/Actions/Submit/AutoSync_AfterCS.action"}
 
 /***/ }),
 
@@ -2414,7 +2493,7 @@ module.exports = {"Value":"1-800-677-7271","_Type":"String"}
   \******************************************************************/
 /***/ ((module) => {
 
-module.exports = {"DestinationName":"RioFormsMDK","OfflineEnabled":true,"_Type":"Service.OData","_Name":"RioFormsMDK.service","SourceType":"Mobile"}
+module.exports = {"ServiceUrl":"/service/RioFormsMDK/","DestinationName":"RioFormsMDK","OfflineEnabled":true,"_Type":"Service.OData","_Name":"RioFormsMDK.service","Destination":"RioFormsMDK","Annotations":"/RioMDKPOC/Services/.RioFormsMDK.xml","SourceType":"Mobile"}
 
 /***/ }),
 
@@ -2436,6 +2515,8 @@ module.exports = "1.1\n";
 /***/ ((module) => {
 
 "use strict";
+if(typeof __WEBPACK_EXTERNAL_MODULE__nativescript_core_application_settings__ === 'undefined') { var e = new Error("Cannot find module '@nativescript/core/application-settings'"); e.code = 'MODULE_NOT_FOUND'; throw e; }
+
 module.exports = __WEBPACK_EXTERNAL_MODULE__nativescript_core_application_settings__;
 
 /***/ }),

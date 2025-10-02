@@ -47,7 +47,7 @@
       "Target": {
         "Service": "/RioMDKPOC/Services/RioFormsMDK.service",
         "EntitySet": "Questions",
-        "QueryOptions": "$filter=form_ID eq guid'{{#Property:ID}}' and (type_code eq 1 or type_code eq 2)&$orderby=type_code,ID"
+        "QueryOptions": "/RioMDKPOC/Rules/Queries/Questions_QueryOptions.js"
       },
       "Section": "/RioMDKPOC/Fragments/QuestionSection.fragment"
     }

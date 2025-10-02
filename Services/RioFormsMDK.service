@@ -1,7 +1,10 @@
 {
+	"ServiceUrl": "/service/RioFormsMDK/",
 	"DestinationName": "RioFormsMDK",
 	"OfflineEnabled": true,
 	"_Type": "Service.OData",
 	"_Name": "RioFormsMDK.service",
+	"Destination": "RioFormsMDK",
+	"Annotations": "/RioMDKPOC/Services/.RioFormsMDK.xml",
 	"SourceType": "Mobile"
 }

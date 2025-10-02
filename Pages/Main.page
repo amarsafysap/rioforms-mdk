@@ -14,7 +14,6 @@
 							"Value": "Checking…",
 							"_Type": "Control.Type.FormCell.SimpleProperty",
 							"_Name": "NetStatus",
-							"RequiredIndicator": false,
 							"IsVisible": "$(PLT,true,true,false)",
 							"Separator": true,
 							"Caption": "Status",
@@ -42,9 +41,11 @@
 							"Value": "/RioMDKPOC/Rules/User/GetFirstName.js",
 							"_Type": "Control.Type.FormCell.SimpleProperty",
 							"_Name": "FirstNameInput",
-							"RequiredIndicator": false,
 							"IsVisible": true,
 							"Separator": true,
+							"Styles": {
+								"RequiredIndicator": "false"
+							},
 							"Caption": "First name",
 							"OnValueChange": "/RioMDKPOC/Rules/User/SaveFirstName.js",
 							"Enabled": true,
@@ -54,7 +55,6 @@
 							"Value": "/RioMDKPOC/Rules/User/GetLastName.js",
 							"_Type": "Control.Type.FormCell.SimpleProperty",
 							"_Name": "LastNameInput",
-							"RequiredIndicator": false,
 							"IsVisible": true,
 							"Separator": true,
 							"Caption": "Last name",
@@ -123,8 +123,8 @@
 				"Caption": "",
 				"Position": "Right",
 				"IsIconCircular": false,
-        "Visible": "$(PLT,true,true,false)",
-				"OnPress": "/RioMDKPOC/Rules/Sync/Sync_UploadThenDownload.js"
+				"Visible": "$(PLT,true,true,false)",
+				"OnPress": "/RioMDKPOC/Rules/Sync_UploadThenDownload.js"
 			},
 			{
 				"_Type": "Control.Type.ActionBarItem",
